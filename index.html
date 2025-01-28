@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập số tiền bạn muốn được lì xì</title>
+    <style>
+        :root {
+            --primary-color: #E63946;
+            --secondary-color: #FFB703;
+            --text-color: #2B2D42;
+            --background-color: #FFF1E6;
+            --input-background: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            background-image: url('/api/placeholder/400/400');
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--input-background);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 183, 3, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #d62828;
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: var(--primary-color);
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            animation: shake 0.5s ease-in-out;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-input {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2) !important;
+        }
+
+        dialog {
+            border: none;
+            border-radius: 15px;
+            padding: 2rem;
+            background-color: var(--input-background);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            animation: scaleIn 0.5s ease-out;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-image: url('public/image.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: shoot 1s ease-out forwards;
+        }
+
+        .firework::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: explode 0.5s ease-out 0.6s;
+        }
+
+        .firework-left {
+            left: 20%;
+            background-color: #FFD700;
+        }
+
+        .firework-right {
+            right: 20%;
+            background-color: #FF0000;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-50vh) scale(1);
+            }
+            100% {
+                transform: translateY(-50vh) scale(0);
+            }
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                box-shadow: 
+                    0 0 0 0px rgba(255, 215, 0, 0.8),
+                    0 0 0 0px rgba(255, 215, 0, 0.6),
+                    0 0 0 0px rgba(255, 215, 0, 0.4);
+            }
+            100% {
+                transform: scale(1.2);
+                box-shadow: 
+                    0 0 0 20px rgba(255, 215, 0, 0),
+                    0 0 0 40px rgba(255, 215, 0, 0),
+                    0 0 0 60px rgba(255, 215, 0, 0);
+            }
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nhập số tiền bạn muốn được lì xì</h1>
+        
+        <form onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="name">Họ và tên:</label>
+                <input type="text" id="name" name="name" required placeholder="Nhập họ và tên của bạn">
+            </div>
+            <div class="form-group">
+                <label for="bank">Ngân hàng:</label>
+                <select id="bank" name="bank" required>
+                    <option value="">Chọn ngân hàng</option>
+                    <option value="BIDV">BIDV - Ngân hàng TMCP Đầu tư và Phát triển Việt Nam</option>
+                    <option value="VCB">Vietcombank - Ngân hàng TMCP Ngoại thương Việt Nam</option>
+                    <option value="CTG">VietinBank - Ngân hàng TMCP Công thương Việt Nam</option>
+                    <option value="TCB">Techcombank - Ngân hàng TMCP Kỹ thương Việt Nam</option>
+                    <option value="MBB">MB Bank - Ngân hàng TMCP Quân đội</option>
+                    <option value="ACB">ACB - Ngân hàng TMCP Á Châu</option>
+                    <option value="VPB">VPBank - Ngân hàng TMCP Việt Nam Thịnh Vượng</option>
+                    <option value="TPB">TPBank - Ngân hàng TMCP Tiên Phong</option>
+                    <option value="STB">Sacombank - Ngân hàng TMCP Sài Gòn Thương Tín</option>
+                    <option value="HDB">HDBank - Ngân hàng TMCP Phát triển TP.HCM</option>
+                    <option value="OCB">OCB - Ngân hàng TMCP Phương Đông</option>
+                    <option value="MSB">MSB - Ngân hàng TMCP Hàng Hải</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="account">Số tài khoản:</label>
+                <input type="tel" id="account" name="account" required placeholder="Nhập số tài khoản">
+            </div>
+            <div class="form-group">
+                <label for="amount">Số tiền muốn nhận: (Tối đa 500000 VNĐ)</label>
+                <input type="number" id="amount" name="amount" required placeholder="Nhập số tiền (VNĐ)">
+            </div>
+            <div id="error-message" class="error"></div>
+            <button type="submit" class="submit-btn">Gửi yêu cầu</button>
+        </form>
+    </div>
+
+    <dialog id="account-dialog" style="height: 100vh;">
+        <div class="firework firework-left"></div>
+        <div class="firework firework-right"></div>
+        <h2 style="color: white; margin-bottom: 1.5rem; text-align: center;">Thông tin tài khoản</h2>
+        <div style="text-align: center; margin-top: 50vh;">
+            <div id="additional-message" style=" border-radius: 12px; padding: 4px; color: white; text-align: center; margin-bottom: 1.5rem; background: linear-gradient(to right, #ff7e5f, #feb47b);"></div>
+            <button onclick="document.getElementById('account-dialog').close(); document.getElementById('success-audio').pause();" style="padding: 0.8rem 1.5rem; background-color: var(--secondary-color); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 1.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease;">
+            Đóng
+            </button>
+        </div>
+    </dialog>
+
+    <audio id="success-audio" src="public/audio.mp3" loop></audio>
+
+    <script>
+        function validateForm() {
+            const amount = document.getElementById('amount').value;
+            const errorElement = document.getElementById('error-message');
+            const dialog = document.getElementById('account-dialog');
+            const amountInput = document.getElementById('amount');
+            const additionalMessage = document.getElementById('additional-message');
+            const successAudio = document.getElementById('success-audio');
+            
+            if (amount >= 500000) {
+                errorElement.textContent = 'Lỗi: Lì xì phải nhỏ hơn 500.000 VNĐ';
+                errorElement.style.display = 'block';
+                amountInput.classList.add('error-input');
+                return false;
+            }
+            else if (amount >= 50000) {
+                errorElement.textContent = 'Lỗi: Lì xì phải nhỏ hơn 50.000 VNĐ';
+                errorElement.style.display = 'block';
+                amountInput.classList.add('error-input');
+                return false;
+            }
+            else if (amount >= 0) {
+                errorElement.textContent = 'Lỗi: Vui lòng nhập số âm (Thêm dấu - ở đằng trước số tiền muốn nhận)';
+                errorElement.style.display = 'block';
+                amountInput.classList.add('error-input');
+                return false;
+            }
+            
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+            amountInput.classList.remove('error-input');
+            
+            const positiveAmount = Math.abs(amount);
+            additionalMessage.textContent = `Vì bạn đã nhập số âm nên hãy chuyển phần dư (${positiveAmount} VNĐ) vào tài khoản bên trên.`;
+            
+            dialog.showModal();
+            successAudio.play();
+
+            const fireworks = document.querySelectorAll('.firework');
+            fireworks.forEach(firework => {
+                firework.style.animation = 'none';
+                firework.offsetHeight; 
+                firework.style.animation = null;
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>
